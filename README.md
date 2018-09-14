@@ -19,7 +19,7 @@ from handlers import SunRisesEventHandler, SunSetsEventHandler
 
 class MyConsumer(BaseConsumer):
     CONSUMER_GROUP_ID = 'my-consumer-group'
-    TOPICS = 'things,stuff'
+    TOPICS = ['celestial_happenings']
     EVENT_TYPE_HANDLER_MAPPING = {
         "sun_rises": SunRisesEventHandler,
         "sun_sets": SunSetsEventHandler,
