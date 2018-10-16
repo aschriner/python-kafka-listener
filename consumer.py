@@ -6,8 +6,8 @@ import random
 
 from confluent_kafka import Consumer, KafkaException, KafkaError
 
-# REPLACE django settings reference!
-from django.conf import settings
+from somewhere import KAFKA_SETTINGS  # dict of settings to pass to consumer
+
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +36,7 @@ class BaseConsumer(object):
         return self._group_id
 
     def _get_consumer(self):
-        kafka_conf = copy(settings.KAFKA_SETTINGS)
+        kafka_conf = copy(KAFKA_SETTINGS)
         kafka_conf.update(
             {
                 'group.id': self.group_id,
@@ -68,7 +68,7 @@ class BaseConsumer(object):
 
     def get_handler(self, msg):
         payload = json.loads(msg.value())
-        # Update to conform to that schema Roman was talking about?
+        # Make sure to produce messages with an event_type key
         event_type = payload.get('event_type')
         if event_type:
             event_handler = self.EVENT_TYPE_HANDLER_MAPPING.get(event_type)
@@ -89,7 +89,7 @@ class BaseConsumer(object):
             handler.process_message(msg)
 
     def cleanup(self):
-        self.consumer.close()  # important to commit offsets
+        self.consumer.close()  # tis important to commit offsets
 
     def _get_group_id(self):
         consumer_id_suffix = os.environ.get('KAFKA_CONSUMER_GROUP_ID_SUFFIX', self._get_random_id())

@@ -11,13 +11,18 @@ It contains a few niceties, such as:
 
 Example usage:
 
+E.g. Run as a django management command (see run_events_consumer.py):
+```bash
+manage.py run_events_consumer dotted.path.to.CelestialHappeningsConsumer
+```
+
 ```python
 # my_consumer.py
 from consumer import BaseConsumer
 from handlers import SunRisesEventHandler, SunSetsEventHandler
 
 
-class MyConsumer(BaseConsumer):
+class CelestialHappeningsConsumer(BaseConsumer):
     CONSUMER_GROUP_ID = 'my-consumer-group'
     TOPICS = ['celestial_happenings']
     EVENT_TYPE_HANDLER_MAPPING = {
@@ -42,5 +47,3 @@ class SunSetsEventHandler(object):
     def process_message(self, msg):
         go_to_bed()
 ```
-
-Also see mgmt_command.py for example usage as a Django management command.

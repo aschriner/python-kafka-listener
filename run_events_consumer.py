@@ -8,7 +8,7 @@ from raven import Client
 from listener import ProcessManager
 
 
-sentry_client = Client(os.environ.get('SENTRY_DSN', ''))
+sentry_client = Client(os.environ.get('SENTRY_DSN', ''))  # Log errors to Sentry
 logger = logging.getLogger(__name__)
 
 
