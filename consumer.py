@@ -6,7 +6,12 @@ import random
 
 from confluent_kafka import Consumer, KafkaException, KafkaError
 
-from somewhere import KAFKA_SETTINGS  # dict of settings to pass to consumer
+
+KAFKA_SETTINGS = {
+    'bootstrap.servers': os.environ.get('KAFKA_BROKERS_URL'),
+    'session.timeout.ms': 6000,
+    'default.topic.config': {'auto.offset.reset': 'smallest'},
+}
 
 
 logger = logging.getLogger(__name__)
