@@ -68,6 +68,9 @@ class BaseConsumer(object):
 
     def get_handler(self, msg):
         payload = json.loads(msg.value())
+        event_id = payload.get('event_id')
+        if event_id:
+            logger.info("Consuming event with id '{}'".format(event_id))
         # In your producer, make sure to produce messages with an 'event_type' key
         event_type = payload.get('event_type')
         if event_type:
